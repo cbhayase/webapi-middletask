@@ -2,12 +2,13 @@ package com.example.webapimiddletask.controller;
 
 import com.example.webapimiddletask.dto.Book;
 import com.example.webapimiddletask.service.BookService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -23,6 +24,29 @@ public class BookController {
     public ResponseEntity<List<Book>> findAllBooks() {
         List<Book> books = bookService.findAll();
 
-        return new ResponseEntity<>(books, HttpStatus.OK);
+        //return new ResponseEntity<>(books, HttpStatus.OK);
+
+        return  ResponseEntity.ok(books);
+    }
+
+    @PostMapping
+    public ResponseEntity<Book> saveBook(@RequestBody Book book, UriComponentsBuilder uriBuilder) {
+        Book createdBook = bookService.saveBook(book);
+
+        URI location = uriBuilder.path("/api/books/{id}").buildAndExpand(createdBook.getId()).toUri();
+
+        //HttpHeaders headers = new HttpHeaders();
+        //headers.setLocation(location);
+
+        //return new ResponseEntity<>(createdBook, headers, HttpStatus.CREATED);
+
+        return ResponseEntity.created(location).body(createdBook);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Book> findById(@PathVariable long id) {
+        Book book = bookService.findById(id);
+
+        return  ResponseEntity.ok(book);
     }
 }

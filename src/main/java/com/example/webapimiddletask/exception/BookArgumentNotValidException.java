@@ -1,0 +1,7 @@
+package com.example.webapimiddletask.exception;
+
+public class BookArgumentNotValidException extends RuntimeException {
+  public BookArgumentNotValidException(String message) {
+    super(message);
+  }
+}

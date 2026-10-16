@@ -17,4 +17,12 @@ public class BookRepository {
     public List<Book> findAll() {
         return bookMapper.findAll();
     }
+
+    public int insertBook(Book book) {
+        return bookMapper.insert(book);
+    }
+
+    public Book findById(long id) {
+        return bookMapper.findById(id);
+    }
 }
