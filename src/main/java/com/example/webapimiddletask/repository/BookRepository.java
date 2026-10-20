@@ -1,6 +1,7 @@
 package com.example.webapimiddletask.repository;
 
 import com.example.webapimiddletask.dto.Book;
+import com.example.webapimiddletask.exception.BookNotFoundException;
 import com.example.webapimiddletask.mapper.BookMapper;
 import org.springframework.stereotype.Repository;
 
@@ -24,5 +25,16 @@ public class BookRepository {
 
     public Book findById(long id) {
         return bookMapper.findById(id);
+    }
+
+    public boolean delete(long id) {
+        return bookMapper.delete(id) == 1;
+    }
+
+    public Book update(Book book) {
+        if (bookMapper.update(book) == 0) {
+            throw new BookNotFoundException(book.getId());
+        }
+        return book;
     }
 }
